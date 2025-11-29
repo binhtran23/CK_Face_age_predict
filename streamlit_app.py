@@ -16,19 +16,19 @@ def preprocess_image(image):
     # Convert PIL image to numpy array
     img_array = np.array(image)
     
-    # Convert to RGB if image has alpha channel
-    if img_array.shape[-1] == 4:
+    # Ensure RGB format
+    if len(img_array.shape) == 2:  # Grayscale
+        img_array = cv2.cvtColor(img_array, cv2.COLOR_GRAY2RGB)
+    elif img_array.shape[-1] == 4:  # RGBA
         img_array = cv2.cvtColor(img_array, cv2.COLOR_RGBA2RGB)
-    elif len(img_array.shape) == 3 and img_array.shape[-1] == 3:
-        img_array = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
     
-    # Resize image to expected input size (assuming 224x224, adjust if needed)
-    img_resized = cv2.resize(img_array, (224, 224))
+    # Resize to model input size (224x224)
+    img_resized = cv2.resize(img_array, (224, 224), interpolation=cv2.INTER_LINEAR)
     
-    # Normalize pixel values to [0, 1]
+    # Convert to float32 and normalize to [0,1]
     img_normalized = img_resized.astype(np.float32) / 255.0
     
-    # Add batch dimension
+    # Add batch dimension for model input
     img_batch = np.expand_dims(img_normalized, axis=0)
     
     return img_batch
@@ -36,10 +36,13 @@ def preprocess_image(image):
 def predict_age(model, image):
     """Predict age from image using the loaded model"""
     processed_image = preprocess_image(image)
-    prediction = model.predict(processed_image)
+    prediction = model.predict(processed_image, verbose=0)
     
-    # Assuming the model outputs a single value for age
-    predicted_age = prediction[0][0] if len(prediction.shape) > 1 else prediction[0]
+    # Model outputs single age value for regression
+    predicted_age = float(prediction[0][0])
+    
+    # Ensure reasonable age range (clip to 0-100)
+    predicted_age = max(0, min(100, predicted_age))
     
     return predicted_age
 

@@ -24,17 +24,7 @@ Dự án này sử dụng Convolutional Neural Network (CNN) để dự đoán t
 - RAM: tối thiểu 8GB (khuyến nghị 16GB+)
 
 ### Dependencies
-```bash
-pip install tensorflow==2.10.*
-pip install matplotlib
-pip install numpy==1.23.5
-pip install scikit-learn
-pip install pandas
-pip install seaborn
-pip install Pillow
-```
-
-Hoặc cài đặt từ file requirements:
+Cài đặt từ file requirements:
 ```bash
 pip install -r requirements.txt
 ```

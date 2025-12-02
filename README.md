@@ -18,7 +18,7 @@ Dự án này xây dựng một quy trình (pipeline) hoàn chỉnh từ khâu t
 
 Quy trình xử lý của dự án được mô tả tóm tắt qua sơ đồ dưới đây:
 
-![Project Pipeline]
+Quy trình xử lý của dự án được mô tả tóm tắt qua sơ đồ dưới đây:
 ```mermaid
 graph TD
     %% Node Definitions

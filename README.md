@@ -18,7 +18,33 @@ Dự án này xây dựng một quy trình (pipeline) hoàn chỉnh từ khâu t
 
 Quy trình xử lý của dự án được mô tả tóm tắt qua sơ đồ dưới đây:
 
-![Project Pipeline](images/pipeline.png)
+![Project Pipeline]
+```mermaid
+graph TD
+    %% Node Definitions
+    A[📂 Dữ liệu thô] --> B[🔍 Xử lý ảnh trùng bằng pHash]
+    B --> C[✂️ Sử dụng mô hình YuNet<br/>detect khuôn mặt và crop ảnh]
+    
+    %% Split Data
+    C --> D{🔀 Chia tập dữ liệu}
+    
+    %% Train Branch
+    D -- Train --> E[⚖️ Adaptive Spread]
+    E --> F[📂 Tập train với các<br/>class đã làm mượt]
+    F --> G[🧠 Huấn luyện và<br/>đánh giá mô hình]
+    
+    %% Test Branch
+    D -- Test --> H[💾 Lưu trữ để<br/>đánh giá mô hình]
+    H --> G
+    
+    %% Deployment
+    G --> I[🚀 Triển khai Streamlit]
+
+    %% Styling (Tùy chỉnh màu sắc cho đẹp)
+    style D fill:#fff,stroke:#333,stroke-width:4px
+    style E fill:#ff9,stroke:#f66,stroke-width:2px,stroke-dasharray: 5 5
+    style I fill:#bbf,stroke:#333,stroke-width:2px
+```
 
 ### 1. Tiền xử lý dữ liệu (Data Preprocessing)
 Dữ liệu thô sau khi được thu thập sẽ đi qua các bước làm sạch nghiêm ngặt:
